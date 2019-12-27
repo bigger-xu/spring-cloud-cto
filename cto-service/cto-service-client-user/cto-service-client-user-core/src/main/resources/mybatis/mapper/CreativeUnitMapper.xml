@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cto.ad.dao.CreativeUnitMapper" >
+    <resultMap id="CreativeUnitResultMap" type="com.cto.ad.entity.CreativeUnit" >
+        <result property="unitId" column="unit_id" />
+        <result property="creativeId" column="creative_id" />
+        <result property="uuid" column="uuid" />
+        <result property="id" column="id" />
+    </resultMap>
+    <resultMap id="CreativeUnitVoResultMap" type="com.cto.ad.entity.vo.CreativeUnitVo" extends="CreativeUnitResultMap">
+
+    </resultMap>
+
+    <sql id="CreativeUnit_Column_List" >
+        unit_id,
+        creative_id,
+        uuid,
+        id
+    </sql>
+
+    <insert id="insert" parameterType="com.cto.ad.entity.CreativeUnit">
+        <selectKey resultType="java.lang.Long" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO creative_unit (
+        <include refid="CreativeUnit_Column_List" />
+        ) VALUES (
+        #{unitId},
+        #{creativeId},
+        #{uuid},
+        #{id}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.cto.ad.entity.CreativeUnit">
+        UPDATE creative_unit SET
+        unit_id = #{unitId},
+        creative_id = #{creativeId}
+        WHERE
+        id = #{id}
+    </update>
+
+    <update id="updateBySelective" parameterType="com.cto.ad.entity.CreativeUnit">
+        UPDATE creative_unit
+        <set>
+        <if test="unitId!=null">
+        unit_id=#{unitId},
+        </if>
+        <if test="creativeId!=null">
+        creative_id=#{creativeId}
+        </if>
+        </set>
+        WHERE
+        id = #{id}
+    </update>
+
+    <select id="selectEntityById" parameterType="java.lang.Long" resultMap="CreativeUnitResultMap">
+        select <include refid="CreativeUnit_Column_List" /> from creative_unit where id=#{id}
+    </select>
+
+    <select id="selectEntityByUUId" parameterType="string" resultMap="CreativeUnitResultMap">
+        select  <include refid="CreativeUnit_Column_List" /> from creative_unit where uuid=#{uuid}
+    </select>
+
+    <select id="selectListBySearch" parameterType="com.cto.ad.entity.vo.CreativeUnitVo" resultMap="CreativeUnitResultMap">
+        select <include refid="CreativeUnit_Column_List" /> from creative_unit where 1=1
+        <if test="unitId!=null">
+        and unit_id=#{unitId}
+        </if>
+        <if test="creativeId!=null">
+        and creative_id=#{creativeId}
+        </if>
+        <if test="uuid!=null and uuid!=''">
+        and uuid like CONCAT('%',#{uuid},'%')
+        </if>
+        <if test="id!=null">
+        and id=#{id}
+        </if>
+        <if test="sortStr != null and sortStr != ''">
+            order by  ${sortStr}
+        </if>
+    </select>
+
+    <select id="selectPageList" parameterType="com.cto.ad.entity.vo.CreativeUnitVo" resultMap="CreativeUnitResultMap">
+        select <include refid="CreativeUnit_Column_List" /> from creative_unit where 1=1
+        <if test="unitId!=null">
+        and unit_id=#{unitId}
+        </if>
+        <if test="creativeId!=null">
+        and creative_id=#{creativeId}
+        </if>
+        <if test="uuid!=null and uuid!=''">
+        and uuid like CONCAT('%',#{uuid},'%')
+        </if>
+        <if test="id!=null">
+        and id=#{id}
+        </if>
+        <if test="sortStr != null and sortStr != ''">
+            order by  ${sortStr}
+        </if>
+        limit #{startIndex},#{pageSize}
+    </select>
+
+    <select id="selectPageCount" parameterType="com.cto.ad.entity.vo.CreativeUnitVo" resultType="java.lang.Integer">
+        select count(1) from creative_unit where 1=1
+        <if test="unitId!=null">
+        and unit_id=#{unitId}
+        </if>
+        <if test="creativeId!=null">
+        and creative_id=#{creativeId}
+        </if>
+        <if test="uuid!=null and uuid!=''">
+        and uuid like CONCAT('%',#{uuid},'%')
+        </if>
+        <if test="id!=null">
+        and id=#{id}
+        </if>
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM
+        creative_unit
+        where id=#{id}
+    </delete>
+
+    <delete id="deleteByUUId" parameterType="string">
+        DELETE FROM
+        creative_unit
+        where uuid=#{uuid}
+    </delete>
+</mapper>

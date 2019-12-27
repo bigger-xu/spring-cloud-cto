@@ -1,0 +1,53 @@
+server:
+  port: 8002
+  servlet:
+    context-path: /user
+
+spring:
+  application:
+    name: cto-service-client-user
+  datasource:
+    druid:
+      url: jdbc:mysql://localhost:3306/cloud-cto?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      username: root
+      password: root1234
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      type: com.alibaba.druid.pool.DruidDataSource
+      initial-size: 1
+      min-idle: 1
+      max-active: 100
+      max-wait: 60000
+      time-between-eviction-runsMillis: 60000
+      min-evictable-idle-timeMillis: 300000
+      validation-query: select 'x' FROM DUAL
+      test-while-idle: false
+      test-on-borrow: false
+      test-on-return: false
+      pool-prepared-statements: true
+      max-open-prepared-statements: 20
+      max-pool-prepared-statement-per-connection-size: 20
+      filters: log4j
+      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      use-global-data-source-stat: true
+    tomcat:
+      max-active: 4
+      min-idle: 2
+      initial-size: 2
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9000/eureka/
+
+#mybatis 配置
+mybatis:
+  config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mybatis/mapper/**/*.xml
+logging:
+  level:
+    com:
+      cto:
+        cloud: debug
+    org:
+      springframework:
+        web: info
+  file: log/cto-service-client-user.log

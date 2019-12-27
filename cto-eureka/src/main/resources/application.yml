@@ -1,0 +1,22 @@
+server:
+    port: 9000
+spring:
+    application:
+        name: cto-eureka
+eureka:
+    instance:
+        hostname: localhost
+    client:
+        register-with-eureka: false
+        fetch-registry: false
+        service-url:
+            defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+logging:
+    level:
+        com:
+            cto:
+                cloud: debug
+        org:
+            springframework:
+                web: info
+    file: log/cto-eurake.log

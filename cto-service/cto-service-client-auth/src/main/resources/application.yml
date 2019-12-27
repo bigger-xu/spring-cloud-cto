@@ -1,0 +1,30 @@
+server:
+  port: 8001
+  servlet:
+    context-path: /auth
+
+spring:
+  application:
+    name: cto-service-client-auth
+    datasource:
+      url: jdbc:mysql://localhost:3306/cloud-cto?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      username: root
+      password: root1234
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    tomcat:
+      max-active: 4
+      min-idle: 2
+      initial-size: 2
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9000/eureka/
+logging:
+  level:
+    com:
+      cto:
+        cloud: debug
+    org:
+      springframework:
+        web: info
+  file: log/cto-service-client-user.log

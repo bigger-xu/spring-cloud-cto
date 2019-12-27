@@ -1,0 +1,25 @@
+server:
+    port: 8000
+spring:
+    application:
+        name: cto-gateway
+eureka:
+    client:
+        service-url:
+            defaultZone: http://localhost:9000/eureka/
+zuul:
+    prefix: /cto
+    routes:
+        sponsor:
+            path: /ad-sponsor/**
+            serviceId: eureka-client-ad-sponsor
+            strip-prefix: false
+logging:
+    level:
+        com:
+            cto:
+                cloud: debug
+        org:
+            springframework:
+                web: info
+    file: log/cto-gateway.log
