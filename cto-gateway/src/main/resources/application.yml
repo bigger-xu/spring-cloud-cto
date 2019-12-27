@@ -8,12 +8,13 @@ eureka:
         service-url:
             defaultZone: http://localhost:9000/eureka/
 zuul:
-    prefix: /cto
     routes:
-        sponsor:
-            path: /ad-sponsor/**
-            serviceId: eureka-client-ad-sponsor
-            strip-prefix: false
+        user:
+            path: /user/**
+            serviceId: cto-service-client-user
+        auth:
+            path: /auth/**
+            serviceId: cto-auth
 logging:
     level:
         com:

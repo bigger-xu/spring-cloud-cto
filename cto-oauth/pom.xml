@@ -16,6 +16,11 @@
     <description>cto OAuth2 Server</description>
 
     <dependencies>
+        <!-- 引入 BootWeb 功能 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
