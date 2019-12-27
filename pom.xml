@@ -15,6 +15,7 @@
         <module>cto-eureka</module>
         <module>cto-gateway</module>
         <module>cto-service</module>
+        <module>cto-oauth</module>
     </modules>
 
     <properties>

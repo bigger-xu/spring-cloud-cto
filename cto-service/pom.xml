@@ -27,7 +27,6 @@
         <module>cto-service-client-website</module>
         <module>cto-service-client-webmanager</module>
         <module>cto-service-client-message</module>
-        <module>cto-service-client-auth</module>
     </modules>
 
 
