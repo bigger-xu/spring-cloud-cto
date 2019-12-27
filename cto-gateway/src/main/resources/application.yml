@@ -15,6 +15,7 @@ zuul:
         auth:
             path: /auth/**
             serviceId: cto-auth
+    sensitive-headers:
 logging:
     level:
         com:
