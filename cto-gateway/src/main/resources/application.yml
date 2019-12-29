@@ -12,9 +12,11 @@ zuul:
         user:
             path: /user/**
             serviceId: cto-service-client-user
+            stripPrefix: false
         auth:
             path: /auth/**
             serviceId: cto-auth
+            stripPrefix: false
     sensitive-headers:
 logging:
     level:

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * 请求最后结束时执行的过滤器
  * @author Zhang Yongwei
  * @version 1.0
  * @date 2019-12-16

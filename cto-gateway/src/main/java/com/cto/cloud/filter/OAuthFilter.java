@@ -6,8 +6,13 @@ import com.netflix.zuul.context.RequestContext;
 import com.netflix.zuul.exception.ZuulException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,6 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @Component
 public class OAuthFilter extends ZuulFilter {
+
+    private RestTemplate  restTemplate = new RestTemplate();
+
     @Override
     public String filterType() {
         return FilterConstants.PRE_TYPE;
@@ -46,13 +54,12 @@ public class OAuthFilter extends ZuulFilter {
         if(StringUtils.isBlank(authHeader)){
             return null;
         }
-        if(!StringUtils.startsWithIgnoreCase("authHeader","bearer ")){
+        if(!StringUtils.startsWithIgnoreCase(authHeader,"bearer ")){
             return null;
         }
         try{
             TokenInfo tokenInfo = getTokenInfo(authHeader);
             request.setAttribute("tokenInfo",tokenInfo);
-
         }catch (Exception e){
             log.error("Get Token Info Fail.",e);
         }
@@ -62,6 +69,20 @@ public class OAuthFilter extends ZuulFilter {
 
     private TokenInfo getTokenInfo(String authHeader) {
         String token = StringUtils.substringAfter(authHeader,"bearer ");
-        return null;
+        String oauthServiceUrl = "http://localhost:8001/oauth/check_token";
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        httpHeaders.setBasicAuth("gateway","123456");
+
+        MultiValueMap<String,String> params = new LinkedMultiValueMap<>();
+        params.add("token",token);
+
+        HttpEntity<MultiValueMap<String,String>> entity = new HttpEntity<>(params,httpHeaders);
+
+        ResponseEntity<TokenInfo> responseEntity = restTemplate.exchange(oauthServiceUrl, HttpMethod.POST,entity,TokenInfo.class);
+
+        log.info("TokenInfo is :" + responseEntity.getBody().toString());
+        return responseEntity.getBody();
     }
 }
